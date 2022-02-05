@@ -1,0 +1,78 @@
+#include <stdio.h>                                      //introduzco librerias//
+#include <stdlib.h>
+
+void printaExito (int a, int b, int c);                 /* Aquí predefino las funciones, como son de entrada, serán void y el booleano, que también es una función en C*/ 
+void printaFracaso (int a);                                 
+typedef enum {FALSE, TRUE} bool;
+bool loEs (int x, int y, int z);
+void buscadivisor1 (int n, int *d1, int *d2);           /*IMPORTANTE poner apuntador en parametros de salida. En este caso d1 y d2*/
+void buscadivisor2 (int num, int *d1, int *d2);
+
+int main(){                                             /* definimos funcion principal, main*/
+    int num, divisor1, divisor2;                        /*variables dentro de función principal*/
+    printf ("Escribe el primer numero ");               /*mensaje que aparecerá por pantalla*/
+    scanf ("%d", &num);                                 /*leer numero entero*/
+    while (num!=-1){                                    /*creamos un bucle, mientras el numero sea diferente a -1*/
+        buscadivisor1 (num,&divisor1,&divisor2);        /*aqui encontraria la función buscadivisor1. IMPORTANTE poner aspersan (&), de esta manera cogera valor de apuntador*/
+        if (loEs(num,divisor1,divisor2))                /*creamos una condición respecto al booleano loEs. Si ocurre este booleanos se hará la función printaExito*/
+        {
+         printaExito (num,divisor1,divisor2);
+        }
+        else                                            /*sino se cumple booleano, se hará la función printaFracaso*/
+        {
+         printaFracaso(num);
+        }
+        printf(" Escribe otro numero ");                /* nos aparecerá el mensaje, para escribir otro número*/
+        scanf ("%d", &num);                             /*leernumero para poder introducirlo*/
+    }                                                   /* se acaba el while*/
+}
+void printaExito (int a, int b, int c){                 /* especificmaos las operaciones que hará la función printaExito. IMPORTANTE, que esten escritas exactamente como en cabecera*/
+    printf("El numero: ");                              // escribirá el mensaje en pantalla//
+    printf("%d", a);                                    // le da el valor a (a)//
+    printf(" es igual a ");                              // escribirá el mensaje en pantalla//
+    printf("%d", b);                                        // le da el valor a (b)//
+    printf(" multiplicado por ");                        // escribirá el mensaje en pantalla//
+    printf("%d", c);                                        // le da el valor a (c)//
+}
+void printaFracaso (int a){                              /* especificmaos las operaciones que hará la función printaFracaso. IMPORTANTE, que esten escritas exactamente como en cabecera*/
+    printf("El numero: ");
+    printf("%d", a);
+    printf(" no tiene divisores diferentes de 1 y 2 que multiplicados sean iguales a el ");
+}
+bool loEs (int x, int y, int z){                         /* especificamos las operaciones que hará el booleano. IMPORTANTE, que esten escritas exactamente como en cabecera*/
+    if (y==z){                                              //creamos una condición que si y es igual a z, nos devuelva falso//
+         return FALSE;
+    }
+    else{                                                   //sino se cumple la condición nos devuelve que x es igual a y multiplicada por z//
+        return x==(y*z);
+    }
+}
+void buscadivisor1 (int n, int *d1, int *d2){               /* especificamos las operaciones que hará la función buscadivisor1. IMPORTANTE, que esten escritas exactamente como en cabecera y en este caso con los apuntadores, como en cabecera*/        
+     bool encontrado;                                       
+     encontrado = FALSE;
+    *d1= 3;                                                 //asignamos el valor de 3, como marca en el pdf (que nos dice que no sea 1 o 2)//
+    *d2= 3;
+    while (*d1<=(n / 2) && !encontrado){                    //creamos un mientras el valor de d1 sea menor o igual a la mitad de n y no sea encontrado, se hará la función buscadivisor2//
+        buscadivisor2(n,d1,d2);
+        encontrado = loEs (n,*d1,*d2);                      //asignamos a encontrado el valor de la función del booleano loEs, con apuntadores para tener los valores//
+        if(!encontrado){                                       //si es diferente a encontrado, le asignamos el valor de la suma de d1 más 1 a d1, para que siga el bucle y encuentre el número//
+            *d1= *d1 +1;
+        }
+    }
+}
+
+
+
+void buscadivisor2 (int num, int *d1, int *d2){             /* especificmaos las operaciones que hará la función buscadivisor2. IMPORTANTE, que esten escritas exactamente como en cabecera y en este caso con los apuntadores, como en cabecera*/        
+    bool encontrado;
+    encontrado = FALSE;
+    *d2 = 3;                                                //asignamos valor de 3 a d2//
+    while (*d2<=(num / 2) && !encontrado){                  //creamos un mientras d2 sea menor o igual a la mitad del numero y diferente a encontrado, 
+        encontrado = loEs (num, *d1,*d2);                   //asignamos a encontrado el valor de la función booleana loEs y si es diferente a encontrado, realizará la operación de sumarla 1 a d2//
+        if(!encontrado){
+            *d2 = *d2 +1;
+        }
+    }
+}
+
+
